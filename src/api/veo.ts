@@ -61,18 +61,18 @@ Respond in this EXACT JSON format (no markdown code blocks, just raw JSON). The 
   }
 }`;
 
-    let rawJSON = "";
-    try {
-      // Pass a high token limit (1500) because a detailed JSON medical summary easily exceeds the default 600 limit
-      rawJSON = await chatWithAI([{ role: 'user', content: transcript }], systemPrompt, 1500);
-      
-      const jsonMatch = rawJSON.match(/\{[\s\S]*\}/);
-      if (!jsonMatch) {
-        throw new Error(`No JSON found. Raw Output: ${rawJSON.substring(0, 100)}...`);
-      }
-      
-      const result = JSON.parse(jsonMatch[0]);
-    
+  let rawJSON = "";
+  try {
+    // Pass a high token limit (1500) because a detailed JSON medical summary easily exceeds the default 600 limit
+    rawJSON = await chatWithAI([{ role: 'user', content: transcript }], systemPrompt, 1500);
+
+    const jsonMatch = rawJSON.match(/\{[\s\S]*\}/);
+    if (!jsonMatch) {
+      throw new Error(`No JSON found. Raw Output: ${rawJSON.substring(0, 100)}...`);
+    }
+
+    const result = JSON.parse(jsonMatch[0]);
+
     return {
       prompt: result.prompt || 'A 3D medical visualization of human anatomy.',
       region: result.region || 'full',
@@ -85,11 +85,11 @@ Respond in this EXACT JSON format (no markdown code blocks, just raw JSON). The 
       prompt: 'A 3D medical visualization of human anatomy.',
       region: 'full',
       explanation: {
-         condition: "Error Generating Analysis",
-         bodyPart: "System Error",
-         whatsHappening: `The AI encountered a critical error: ${error instanceof Error ? error.message : String(error)}`,
-         whyItMatters: "This prevents the dynamic zooming and clinical summary generation.",
-         whatHelps: "Try generating the model again or check the console for details."
+        condition: "Error Generating Analysis",
+        bodyPart: "System Error",
+        whatsHappening: `The AI encountered a critical error: ${error instanceof Error ? error.message : String(error)}`,
+        whyItMatters: "This prevents the dynamic zooming and clinical summary generation.",
+        whatHelps: "Try generating the model again or check the console for details."
       },
       videoUrl: "https://v.ftcdn.net/06/15/80/74/700_F_615807466_WlkBst7o8W8X2P88WvN8f7XfB9B8bX8z_ST.mp4"
     };
